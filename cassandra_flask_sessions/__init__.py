@@ -54,7 +54,7 @@ class CassandraSessionInterface(SessionInterface):
         cass_exp = self.get_cass_expiration_time(app, session)
         cookie_exp = self.get_expiration_time(app, session)
         data = json.dumps(dict(session))
-        print(cass_exp.total_seconds())
+
         self.session.execute_async("INSERT INTO sessions (sid, data) VALUES (%s, %s) USING TTL %s",
                                    [session.sid, data, int(cass_exp.total_seconds())])
         response.set_cookie(app.session_cookie_name, session.sid,
