@@ -3,6 +3,10 @@
 The following code implements a session backend using Apache Cassandra. 
 
 
+## Installation
+
+`pip install cassandra_flask_sessions`
+
 ## Configuring the database
 
 To create the table in the Cassandra database, you need the execute the following CQL commands:
