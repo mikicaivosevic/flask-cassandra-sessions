@@ -7,7 +7,7 @@ setup(
   author = 'Mikica Ivosevic',
   author_email = 'mikica.ivosevic@gmail.com',
   url = 'https://github.com/mikicaivosevic/flask-cassandra-sessions', # use the URL to the github repo
-  download_url = 'https://github.com/mikicaivosevic/flask-cassandra-sessions/tarball/0.1', # I'll explain this in a second
+  download_url = 'https://github.com/mikicaivosevic/flask-cassandra-sessions/archive/0.1.tar.gz', # I'll explain this in a second
   keywords = ['flask', 'cassandra', 'sessions'],
   classifiers = [],
 )
