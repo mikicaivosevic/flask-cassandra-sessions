@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS sessions (
 
 ```python
 from flask import Flask
+from cassandra_flask_sessions import CassandraSessionInterface
 
 app = Flask(__name__)
 app.session_interface = CassandraSessionInterface(keyspace='tests')
