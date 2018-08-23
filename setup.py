@@ -3,7 +3,7 @@ setup(
   name = 'cassandra_flask_sessions',
   packages = ['cassandra_flask_sessions'], # this must be the same as the name above
   install_requires = ['cassandra-driver'],
-  version = '0.3',
+  version = '0.4',
   description = 'Server side sessions with Apache Cassandra',
   author = 'Mikica Ivosevic',
   author_email = 'mikica.ivosevic@gmail.com',
