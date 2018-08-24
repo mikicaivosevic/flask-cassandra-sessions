@@ -4,6 +4,7 @@ import json
 from flask.sessions import SessionInterface, SessionMixin
 from werkzeug.datastructures import CallbackDict
 from cassandra.cluster import Cluster
+from cassandra.auth import PlainTextAuthProvider
 
 
 class CassandraSession(CallbackDict, SessionMixin):
@@ -17,11 +18,25 @@ class CassandraSession(CallbackDict, SessionMixin):
 
 
 class CassandraSessionInterface(SessionInterface):
-    def __init__(self, cluster=None, port=9042, keyspace='tests'):
-        if cluster is None:
-            cluster = ['127.0.0.1']
-        cluster = Cluster(cluster, port=port)
-        self.session = cluster.connect(keyspace)
+
+    def __init__(
+        self,
+        cluster=None,
+        port=9042,
+        keyspace='tests',
+        username=None,
+        password=None,
+    ):
+        cluster = cluster or ['127.0.0.1']
+        if username and password:
+            cassandra_cluster = Cluster(
+                cluster,
+                port,
+                PlainTextAuthProvider(username, password))
+        else:
+            cassandra_cluster = Cluster(cluster, port)
+
+        self.session = cassandra_cluster.connect(keyspace)
 
     def get_cass_expiration_time(self, app, session):
         if session.permanent:
