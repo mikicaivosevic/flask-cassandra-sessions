@@ -11,7 +11,7 @@ class CassandraSession(CallbackDict, SessionMixin):
         def on_update(self):
             self.modified = True
 
-        CallbackDict.__init__(self, initial)
+        CallbackDict.__init__(self, initial, on_update)
         self.sid = sid
         self.modified = False
 
