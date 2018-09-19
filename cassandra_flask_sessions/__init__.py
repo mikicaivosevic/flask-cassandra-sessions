@@ -1,5 +1,4 @@
 from uuid import uuid4
-from datetime import timedelta
 import json
 from flask.sessions import SessionInterface, SessionMixin
 from werkzeug.datastructures import CallbackDict
@@ -8,6 +7,7 @@ from cassandra.auth import PlainTextAuthProvider
 
 
 class CassandraSession(CallbackDict, SessionMixin):
+
     def __init__(self, initial=None, sid=None):
         def on_update(self):
             self.modified = True
@@ -38,11 +38,6 @@ class CassandraSessionInterface(SessionInterface):
 
         self.session = cassandra_cluster.connect(keyspace)
 
-    def get_cass_expiration_time(self, app, session):
-        if session.permanent:
-            return app.permanent_session_lifetime
-        return timedelta(days=1)
-
     def generate_sid(self):
         return str(uuid4())
 
@@ -66,7 +61,7 @@ class CassandraSessionInterface(SessionInterface):
             if session.modified:
                 response.delete_cookie(app.session_cookie_name, domain=domain)
             return
-        cass_exp = self.get_cass_expiration_time(app, session)
+        cass_exp = app.permanent_session_lifetime
         cookie_exp = self.get_expiration_time(app, session)
         data = json.dumps(dict(session))
 
