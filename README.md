@@ -27,11 +27,39 @@ CREATE TABLE IF NOT EXISTS sessions (
 
 ```python
 from flask import Flask
-from cassandra_flask_sessions import CassandraSessionInterface
+from cassandra.cluster import Cluster
+from cassandra_flask_sessions import AbstractConnectionProvider, CassandraSessionInterface
+
+
+class ConnectionProvider(AbstractConnectionProvider):
+
+    def __init__(self):
+        self.__connection = Cluster(['127.0.0.1']).connect('tests')
+
+    def get_connection(self):
+        return self.__connection
 
 app = Flask(__name__)
-app.session_interface = CassandraSessionInterface(keyspace='tests')
+app.session_interface = CassandraSessionInterface(ConnectionProvider())
 # change session lifetime if you need
 # app.config.update({'PERMANENT_SESSION_LIFETIME': 86400})
+```
+
+You can use custom session class if you need:
+
+```
+from flask.sessions import SessionMixin
+from werkzeug.datastructures import CallbackDict
+
+class CassandraSession(CallbackDict, SessionMixin):
+
+    def __init__(self, initial=None, sid=None):
+        def on_update(self):
+            print ('on update')
+
+        CallbackDict.__init__(self, initial, on_update)
+        self.sid = sid
+
+app.session_interface = CassandraSessionInterface(ConnectionProvider(), CassandraSession)
 ```
 

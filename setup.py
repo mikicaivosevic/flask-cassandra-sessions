@@ -11,5 +11,8 @@ setup(
     author_email='mikica.ivosevic@gmail.com',
     url='https://github.com/mikicaivosevic/flask-cassandra-sessions',
     keywords=['flask', 'cassandra', 'sessions'],
-    classifiers=[],
+    classifiers=[
+        'Framework :: Flask',
+        'Programming Language :: Python',
+    ],
 )
